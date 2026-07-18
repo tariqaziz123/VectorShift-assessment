@@ -17,7 +17,7 @@ export const SubmitButton = () => {
     );
 
     /**
-     * validatePipeline function checks if the pipeline has at least one input and one output node.
+     * validatePipeline function checks if the pipeline has at least one input and one output node, and that all nodes are connected.
      * @returns {Object} Validation result with isValid boolean and errorMessage string.
      */
     const validatePipeline = () => {
@@ -42,6 +42,31 @@ export const SubmitButton = () => {
             return {
                 isValid: false,
                 errorMessage: '❌ Pipeline must have at least one Output node'
+            };
+        }
+        
+        // Check for disconnected nodes
+        const disconnectedNodes = nodes.filter(node => {
+            const hasIncomingEdge = edges.some(edge => edge.target === node.id);
+            const hasOutgoingEdge = edges.some(edge => edge.source === node.id);
+            
+            // Input nodes should have outgoing edges
+            if (node.type === 'customInput') {
+                return !hasOutgoingEdge;
+            }
+            // Output nodes should have incoming edges
+            if (node.type === 'customOutput') {
+                return !hasIncomingEdge;
+            }
+            // Other nodes should have at least one connection
+            return !hasIncomingEdge && !hasOutgoingEdge;
+        });
+        
+        if (disconnectedNodes.length > 0) {
+            const disconnectedNodeTypes = disconnectedNodes.map(n => n.type).join(', ');
+            return {
+                isValid: false,
+                errorMessage: `❌ Pipeline has ${disconnectedNodes.length} disconnected node(s): ${disconnectedNodeTypes}. All nodes must be connected.`
             };
         }
         
