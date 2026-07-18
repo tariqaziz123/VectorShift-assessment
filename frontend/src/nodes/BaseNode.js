@@ -2,6 +2,19 @@
 
 import { Handle, Position } from 'reactflow';
 
+/**
+ * BaseNode component serves as a generic node structure for the pipeline, providing a consistent layout and styling for various types of nodes. It accepts props to customize its title, handles, fields, and additional children components.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.id - The unique identifier for the node.
+ * @param {Object} props.data - The data associated with the node.
+ * @param {string} props.title - The title displayed at the top of the node.
+ * @param {Array} props.handles - An array of handle configurations for connecting to other nodes.
+ * @param {Array} props.fields - An array of field configurations for user input within the node.
+ * @param {Object} props.style - Additional styles to customize the node's appearance.
+ * @param {React.ReactNode} props.children - Additional child components to render within the node.
+ * @returns {JSX.Element} The rendered BaseNode component.
+ */
 export const BaseNode = ({ 
   id, 
   data, 
@@ -11,6 +24,9 @@ export const BaseNode = ({
   style = {},
   children 
 }) => {
+  /**
+   * The default style for the node, including dimensions, background, border, and other visual properties.
+   */
   const defaultStyle = {
     width: 220,
     minHeight: 90,
@@ -26,6 +42,9 @@ export const BaseNode = ({
     ...style
   };
 
+  /**
+   * The style for the handles, defining their size, color, border, and transition effects.
+   */
   const handleStyle = {
     width: '12px',
     height: '12px',
@@ -35,6 +54,9 @@ export const BaseNode = ({
     transition: 'all 0.2s ease'
   };
 
+  /**
+   * The style for the labels, defining their font size, weight, color, and margin.
+   */
   const labelStyle = {
     fontSize: '12px',
     fontWeight: '500',
@@ -43,6 +65,9 @@ export const BaseNode = ({
     display: 'block'
   };
 
+  /**
+   * The style for the input fields, defining their width, padding, background, border, border radius, color, font size, outline, transition effects, and box sizing.
+   */
   const inputStyle = {
     width: '100%',
     padding: '8px 12px',
@@ -56,11 +81,17 @@ export const BaseNode = ({
     boxSizing: 'border-box'
   };
 
+  /**
+   * The style for the select dropdown, inheriting from the input style and adding a pointer cursor.
+   */
   const selectStyle = {
     ...inputStyle,
     cursor: 'pointer'
   };
 
+  /**
+   * The BaseNode component renders a div containing the handles, title, fields, and any additional children. It maps over the handles and fields arrays to create the respective elements, applying the defined styles for consistent appearance.
+   */
   return (
     <div style={defaultStyle}>
       {handles.map((handle, index) => (

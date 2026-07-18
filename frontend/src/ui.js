@@ -18,8 +18,16 @@ import { DelayNode } from './nodes/delayNode';
 
 import 'reactflow/dist/style.css';
 
+/**
+ * PipelineUI component renders the main user interface for building a pipeline using a drag-and-drop approach. It utilizes the React Flow library to manage nodes and edges, allowing users to create and connect various types of nodes in a visual manner.
+ * @returns {JSX.Element} The rendered PipelineUI component.
+ */
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
+
+/**
+ * nodeTypes defines the available node types for the pipeline UI.
+ */
 const nodeTypes = {
   customInput: InputNode,
   llm: LLMNode,
@@ -32,6 +40,9 @@ const nodeTypes = {
   delay: DelayNode,
 };
 
+/**
+ * selector function is used to extract specific parts of the Zustand store for use in the component.
+ */
 const selector = (state) => ({
   nodes: state.nodes,
   edges: state.edges,
@@ -42,6 +53,10 @@ const selector = (state) => ({
   onConnect: state.onConnect,
 });
 
+/**
+ * PipelineUI component renders the main user interface for building a pipeline using a drag-and-drop approach. It utilizes the React Flow library to manage nodes and edges, allowing users to create and connect various types of nodes in a visual manner.
+ * @returns {JSX.Element} The rendered PipelineUI component.
+ */
 export const PipelineUI = () => {
     const reactFlowWrapper = useRef(null);
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
@@ -55,11 +70,21 @@ export const PipelineUI = () => {
       onConnect
     } = useStore(selector, shallow);
 
+    /**
+     * getInitNodeData function initializes the data for a new node based on its ID and type.
+     * @param {string} nodeID - The unique identifier for the node.
+     * @param {string} type - The type of the node.
+     * @returns {Object} The initialized node data.
+     */
     const getInitNodeData = (nodeID, type) => {
       let nodeData = { id: nodeID, nodeType: `${type}` };
       return nodeData;
     }
 
+    /**
+     * onDrop function handles the drop event when a node is dragged and dropped onto the canvas.
+     * @param {Object} event - The drop event object.
+     */
     const onDrop = useCallback(
         (event) => {
           event.preventDefault();
@@ -93,11 +118,18 @@ export const PipelineUI = () => {
         [reactFlowInstance]
     );
 
+    /**
+     * onDragOver function handles the drag over event for the canvas.
+     * @param {Object} event - The drag over event object.
+     */
     const onDragOver = useCallback((event) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
     }, []);
 
+    /**
+     * The PipelineUI component renders the React Flow canvas with nodes and edges, allowing users to interact with the pipeline visually. It includes controls, a minimap, and a background grid for better user experience.
+     */
     return (
         <>
         <div ref={reactFlowWrapper} style={{width: '100wv', height: '70vh', background: '#0f172a'}}>

@@ -1,6 +1,20 @@
 // draggableNode.js
 
+/**
+ * DraggableNode component represents a draggable node in the pipeline that can be dragged onto the canvas. It provides a visual representation of the node with a specific type and label.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.type - The type of the node.
+ * @param {string} props.label - The label for the node.
+ * @returns {JSX.Element} The rendered DraggableNode component.
+ */
 export const DraggableNode = ({ type, label }) => {
+  /**
+   * Handles the drag start event for the node, setting the cursor style and transferring the node type data to the drag event.
+   *
+   * @param {Object} event - The drag event object.
+   * @param {string} nodeType - The type of the node being dragged.
+   */
     const onDragStart = (event, nodeType) => {
       const appData = { nodeType }
       event.target.style.cursor = 'grabbing';
@@ -8,6 +22,9 @@ export const DraggableNode = ({ type, label }) => {
       event.dataTransfer.effectAllowed = 'move';
     };
   
+    /**
+     * A mapping of node types to their descriptions.
+     */
     const nodeDescriptions = {
       customInput: 'Entry point for data with configurable name and type',
       llm: 'Language Model node with system and prompt inputs',
@@ -20,6 +37,9 @@ export const DraggableNode = ({ type, label }) => {
       delay: 'Time delay node with configurable millisecond delay'
     };
 
+    /**
+     * A mapping of node types to their gradient background colors.
+     */
     const nodeColors = {
       customInput: 'from-blue-500 to-blue-600',
       llm: 'from-purple-500 to-purple-600',
@@ -32,9 +52,15 @@ export const DraggableNode = ({ type, label }) => {
       delay: 'from-red-500 to-red-600'
     };
 
+    /**
+     * Calculates the gradient background for the node based on its type.
+     */
     const gradient = nodeColors[type] || 'from-gray-500 to-gray-600';
     const description = nodeDescriptions[type] || 'Drag to add this node to the canvas';
     
+    /**
+     * Renders the DraggableNode component with the specified type, label, and description. The node is styled with a gradient background, rounded corners, and a shadow effect. It is draggable and responds to mouse events for visual feedback.
+     */
     return (
       <div
         className={type}

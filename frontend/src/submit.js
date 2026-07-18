@@ -3,12 +3,22 @@
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 
+/**
+ * SubmitButton component renders a button that allows users to submit their pipeline for analysis.
+ * @returns {JSX.Element} The rendered SubmitButton component.
+ */
 export const SubmitButton = () => {
+    /**
+     * useStore hook is used to access the nodes and edges from the Zustand store. The shallow comparison is used to prevent unnecessary re-renders when the state changes.
+     */
     const { nodes, edges } = useStore(
         (state) => ({ nodes: state.nodes, edges: state.edges }),
         shallow
     );
 
+    /**
+     * handleSubmit function is an asynchronous function that sends a POST request to the backend API with the current nodes and edges of the pipeline. It handles the response and displays user-friendly alerts based on the analysis results or any errors encountered during submission.
+     */
     const handleSubmit = async () => {
         try {
             const response = await fetch('http://localhost:8000/pipelines/parse', {
@@ -41,6 +51,9 @@ export const SubmitButton = () => {
         }
     };
 
+    /**
+     * The SubmitButton component renders a styled button that triggers the handleSubmit function when clicked. The button is centered and has a gradient background, rounded corners, and hover effects for better user experience.
+     */
     return (
         <div style={{
             display: 'flex', 

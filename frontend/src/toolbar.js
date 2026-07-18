@@ -2,6 +2,10 @@
 
 import { DraggableNode } from './draggableNode';
 
+/**
+ * PipelineToolbar component renders a toolbar that contains draggable nodes for building a pipeline. It provides a user interface for users to drag and drop different types of nodes onto the canvas.
+ * @returns {JSX.Element} The rendered PipelineToolbar component.
+ */
 export const PipelineToolbar = () => {
 
     return (

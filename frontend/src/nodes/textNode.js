@@ -4,9 +4,21 @@ import { useState, useEffect, useMemo } from 'react';
 import { Position } from 'reactflow';
 import { BaseNode } from './BaseNode';
 
+/**
+ * TextNode component represents a node in the pipeline that allows users to define a text input. It provides an input field for specifying the text content and defines handles for connecting to other nodes.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.id - The unique identifier for the node.
+ * @param {Object} props.data - The data associated with the node, including initial values for text content.
+ * @returns {JSX.Element} The rendered TextNode component.
+ */
 export const TextNode = ({ id, data }) => {
   const [currText, setCurrText] = useState(data?.text || '{{input}}');
 
+  /**
+   * Handles the change event for the text input field, updating the state with the current text value.
+   * @param {Object} e - The change event object.
+   */
   const handleTextChange = (e) => {
     setCurrText(e.target.value);
   };
@@ -65,6 +77,9 @@ export const TextNode = ({ id, data }) => {
     ];
   }, [id, variables]);
 
+  /**
+   * The fields for the node, defining the input elements for configuring the text content.
+   */
   const fields = [
     {
       label: 'Text',
@@ -74,6 +89,9 @@ export const TextNode = ({ id, data }) => {
     }
   ];
 
+  /**
+   * The TextNode component renders a BaseNode component, passing in the necessary props such as id, data, title, handles, and fields. The BaseNode is styled with a specific background color and border color to visually distinguish it as a text node.
+   */
   return (
     <BaseNode
       id={id}
