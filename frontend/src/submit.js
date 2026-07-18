@@ -1,6 +1,45 @@
 // submit.js
 
+import { useStore } from './store';
+import { shallow } from 'zustand/shallow';
+
 export const SubmitButton = () => {
+    const { nodes, edges } = useStore(
+        (state) => ({ nodes: state.nodes, edges: state.edges }),
+        shallow
+    );
+
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/pipelines/parse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nodes: nodes,
+                    edges: edges
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit pipeline');
+            }
+
+            const data = await response.json();
+            
+            // Display user-friendly alert
+            const dagStatus = data.is_dag ? '✅ Valid DAG' : '❌ Not a DAG (contains cycles)';
+            alert(
+                `Pipeline Analysis Results:\n\n` +
+                `📊 Number of Nodes: ${data.num_nodes}\n` +
+                `🔗 Number of Edges: ${data.num_edges}\n` +
+                `${dagStatus}`
+            );
+        } catch (error) {
+            alert(`Error submitting pipeline: ${error.message}`);
+        }
+    };
 
     return (
         <div style={{
@@ -12,7 +51,8 @@ export const SubmitButton = () => {
             background: 'linear-gradient(180deg, #1e293b 0%, #0f172a 100%)'
         }}>
             <button 
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 style={{
                     padding: '12px 32px',
                     background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
