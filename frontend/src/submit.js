@@ -17,9 +17,51 @@ export const SubmitButton = () => {
     );
 
     /**
+     * validatePipeline function checks if the pipeline has at least one input and one output node.
+     * @returns {Object} Validation result with isValid boolean and errorMessage string.
+     */
+    const validatePipeline = () => {
+        const hasInputNode = nodes.some(node => node.type === 'customInput');
+        const hasOutputNode = nodes.some(node => node.type === 'customOutput');
+        
+        if (!hasInputNode && !hasOutputNode) {
+            return {
+                isValid: false,
+                errorMessage: '❌ Pipeline must have at least one Input node and one Output node'
+            };
+        }
+        
+        if (!hasInputNode) {
+            return {
+                isValid: false,
+                errorMessage: '❌ Pipeline must have at least one Input node'
+            };
+        }
+        
+        if (!hasOutputNode) {
+            return {
+                isValid: false,
+                errorMessage: '❌ Pipeline must have at least one Output node'
+            };
+        }
+        
+        return {
+            isValid: true,
+            errorMessage: null
+        };
+    };
+
+    /**
      * handleSubmit function is an asynchronous function that sends a POST request to the backend API with the current nodes and edges of the pipeline. It handles the response and displays user-friendly alerts based on the analysis results or any errors encountered during submission.
      */
     const handleSubmit = async () => {
+        // Validate pipeline before submission
+        const validation = validatePipeline();
+        if (!validation.isValid) {
+            alert(validation.errorMessage);
+            return;
+        }
+
         try {
             const response = await fetch('http://localhost:8000/pipelines/parse', {
                 method: 'POST',
