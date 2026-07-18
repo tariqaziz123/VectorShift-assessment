@@ -8,6 +8,18 @@ export const DraggableNode = ({ type, label }) => {
       event.dataTransfer.effectAllowed = 'move';
     };
   
+    const nodeDescriptions = {
+      customInput: 'Entry point for data with configurable name and type',
+      llm: 'Language Model node with system and prompt inputs',
+      customOutput: 'Exit point for pipeline results with configurable name and type',
+      text: 'Text processing with dynamic variable detection',
+      math: 'Mathematical operations with two operands',
+      condition: 'Conditional logic with comparison operators',
+      api: 'HTTP API calls with configurable URL and method',
+      transform: 'String transformations (uppercase, lowercase, trim, etc.)',
+      delay: 'Time delay node with configurable millisecond delay'
+    };
+
     const nodeColors = {
       customInput: 'from-blue-500 to-blue-600',
       llm: 'from-purple-500 to-purple-600',
@@ -21,12 +33,14 @@ export const DraggableNode = ({ type, label }) => {
     };
 
     const gradient = nodeColors[type] || 'from-gray-500 to-gray-600';
+    const description = nodeDescriptions[type] || 'Drag to add this node to the canvas';
     
     return (
       <div
         className={type}
         onDragStart={(event) => onDragStart(event, type)}
         onDragEnd={(event) => (event.target.style.cursor = 'grab')}
+        title={description}
         style={{ 
           cursor: 'grab', 
           minWidth: '90px', 
