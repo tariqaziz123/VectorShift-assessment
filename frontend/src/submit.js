@@ -1,7 +1,7 @@
 // submit.js
 
 import { useStore } from './store';
-import { useShallow } from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 /**
  * SubmitButton component renders a button that allows users to submit their pipeline for analysis.
@@ -12,7 +12,8 @@ export const SubmitButton = () => {
      * useStore hook is used to access the nodes and edges from the Zustand store. The shallow comparison is used to prevent unnecessary re-renders when the state changes.
      */
     const { nodes, edges } = useStore(
-        useShallow((state) => ({ nodes: state.nodes, edges: state.edges }))
+        (state) => ({ nodes: state.nodes, edges: state.edges }),
+        shallow
     );
 
     /**
@@ -66,6 +67,42 @@ export const SubmitButton = () => {
             return {
                 isValid: false,
                 errorMessage: `❌ Pipeline has ${disconnectedNodes.length} disconnected node(s): ${disconnectedNodeTypes}. All nodes must be connected.`
+            };
+        }
+        
+        // Check for nodes with missing required inputs
+        const nodesWithMissingInputs = nodes.filter(node => {
+            const data = node.data || {};
+            
+            // Check different node types for required fields
+            switch (node.type) {
+                case 'text':
+                    return !data.text || data.text.trim() === '';
+                case 'llm':
+                    return !data.systemPrompt || !data.userPrompt;
+                case 'math':
+                    return !data.operand1 || !data.operand2 || !data.operation;
+                case 'condition':
+                    return !data.leftOperand || !data.rightOperand || !data.operator;
+                case 'api':
+                    return !data.url || !data.method;
+                case 'transform':
+                    return !data.operation;
+                case 'delay':
+                    return !data.duration;
+                case 'customInput':
+                case 'customOutput':
+                    return !data.nodeName || data.nodeName.trim() === '';
+                default:
+                    return false;
+            }
+        });
+        
+        if (nodesWithMissingInputs.length > 0) {
+            const missingInputNodes = nodesWithMissingInputs.map(n => `${n.type} (ID: ${n.id})`).join(', ');
+            return {
+                isValid: false,
+                errorMessage: `❌ Pipeline has ${nodesWithMissingInputs.length} node(s) with missing required inputs: ${missingInputNodes}. Please fill all required fields.`
             };
         }
         

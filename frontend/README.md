@@ -26,6 +26,7 @@ A visual pipeline builder application built with React and React Flow that allow
 - **Mandatory Nodes**: Requires at least one Input and one Output node
 - **Connection Validation**: Prevents invalid connections (self-connections, duplicates)
 - **Disconnected Node Detection**: Ensures all nodes are properly connected
+- **Required Field Validation**: Validates that all nodes have their required inputs filled before submission
 - **DAG Validation**: Backend validation to ensure pipelines are valid Directed Acyclic Graphs
 
 ## Available Scripts

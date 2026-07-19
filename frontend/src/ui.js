@@ -5,7 +5,7 @@
 import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
-import { useShallow } from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { InputNode } from './nodes/inputNode';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
@@ -68,7 +68,7 @@ export const PipelineUI = () => {
       onNodesChange,
       onEdgesChange,
       onConnect
-    } = useStore(useShallow(selector));
+    } = useStore(selector, shallow);
 
     /**
      * getInitNodeData function initializes the data for a new node based on its ID and type.
