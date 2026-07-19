@@ -37,25 +37,6 @@ export const DraggableNode = ({ type, label }) => {
       delay: 'Time delay node with configurable millisecond delay'
     };
 
-    /**
-     * A mapping of node types to their gradient background colors.
-     */
-    const nodeColors = {
-      customInput: 'from-blue-500 to-blue-600',
-      llm: 'from-purple-500 to-purple-600',
-      customOutput: 'from-green-500 to-green-600',
-      text: 'from-yellow-500 to-yellow-600',
-      math: 'from-pink-500 to-pink-600',
-      condition: 'from-orange-500 to-orange-600',
-      api: 'from-cyan-500 to-cyan-600',
-      transform: 'from-indigo-500 to-indigo-600',
-      delay: 'from-red-500 to-red-600'
-    };
-
-    /**
-     * Calculates the gradient background for the node based on its type.
-     */
-    const gradient = nodeColors[type] || 'from-gray-500 to-gray-600';
     const description = nodeDescriptions[type] || 'Drag to add this node to the canvas';
     
     /**

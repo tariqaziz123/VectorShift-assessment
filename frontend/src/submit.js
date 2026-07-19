@@ -1,7 +1,7 @@
 // submit.js
 
 import { useStore } from './store';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/shallow';
 
 /**
  * SubmitButton component renders a button that allows users to submit their pipeline for analysis.
@@ -12,8 +12,7 @@ export const SubmitButton = () => {
      * useStore hook is used to access the nodes and edges from the Zustand store. The shallow comparison is used to prevent unnecessary re-renders when the state changes.
      */
     const { nodes, edges } = useStore(
-        (state) => ({ nodes: state.nodes, edges: state.edges }),
-        shallow
+        useShallow((state) => ({ nodes: state.nodes, edges: state.edges }))
     );
 
     /**

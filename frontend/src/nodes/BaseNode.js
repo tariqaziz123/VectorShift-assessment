@@ -1,6 +1,6 @@
 // BaseNode.js
 
-import { Handle, Position } from 'reactflow';
+import { Handle } from 'reactflow';
 
 /**
  * BaseNode component serves as a generic node structure for the pipeline, providing a consistent layout and styling for various types of nodes. It accepts props to customize its title, handles, fields, and additional children components.
@@ -96,7 +96,7 @@ export const BaseNode = ({
     <div style={defaultStyle}>
       {handles.map((handle, index) => (
         <Handle
-          key={index}
+          key={handle.id || `${id}-${handle.type}-${index}`}
           type={handle.type}
           position={handle.position}
           id={handle.id || `${id}-${handle.type}-${index}`}
@@ -118,7 +118,7 @@ export const BaseNode = ({
       </div>
       
       {fields.map((field, index) => (
-        <div key={index} style={{ marginBottom: '4px' }}>
+        <div key={field.label || index} style={{ marginBottom: '4px' }}>
           <label style={labelStyle}>
             {field.label}
           </label>
@@ -129,7 +129,7 @@ export const BaseNode = ({
               style={selectStyle}
             >
               {field.options.map((option, optIndex) => (
-                <option key={optIndex} value={option.value} style={{ background: '#1e293b' }}>
+                <option key={option.value || optIndex} value={option.value} style={{ background: '#1e293b' }}>
                   {option.label}
                 </option>
               ))}

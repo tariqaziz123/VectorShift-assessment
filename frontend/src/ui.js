@@ -5,7 +5,7 @@
 import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/shallow';
 import { InputNode } from './nodes/inputNode';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
@@ -68,7 +68,7 @@ export const PipelineUI = () => {
       onNodesChange,
       onEdgesChange,
       onConnect
-    } = useStore(selector, shallow);
+    } = useStore(useShallow(selector));
 
     /**
      * getInitNodeData function initializes the data for a new node based on its ID and type.
@@ -95,7 +95,7 @@ export const PipelineUI = () => {
             const type = appData?.nodeType;
       
             // check if the dropped element is valid
-            if (typeof type === 'undefined' || !type) {
+            if (type === undefined || !type) {
               return;
             }
       
@@ -131,7 +131,6 @@ export const PipelineUI = () => {
      * The PipelineUI component renders the React Flow canvas with nodes and edges, allowing users to interact with the pipeline visually. It includes controls, a minimap, and a background grid for better user experience.
      */
     return (
-        <>
         <div ref={reactFlowWrapper} style={{width: '100wv', height: '70vh', background: '#0f172a'}}>
             <ReactFlow
                 nodes={nodes}
@@ -173,6 +172,5 @@ export const PipelineUI = () => {
                 />
             </ReactFlow>
         </div>
-        </>
     )
 }

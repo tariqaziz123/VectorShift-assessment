@@ -1,6 +1,6 @@
 // textNode.js
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Position } from 'reactflow';
 import { BaseNode } from './BaseNode';
 
@@ -62,6 +62,7 @@ export const TextNode = ({ id, data }) => {
       type: 'target',
       position: Position.Left,
       id: `${id}-${variable}`,
+      key: `${id}-${variable}`,
       style: {
         top: `${30 + (index * 25)}%`
       }
@@ -117,8 +118,8 @@ export const TextNode = ({ id, data }) => {
           }}>
             Variables:
           </div>
-          {variables.map((variable, index) => (
-            <div key={index} style={{ 
+          {variables.map((variable) => (
+            <div key={variable} style={{ 
               fontSize: '12px', 
               color: '#c7d2fe',
               fontFamily: 'monospace'
